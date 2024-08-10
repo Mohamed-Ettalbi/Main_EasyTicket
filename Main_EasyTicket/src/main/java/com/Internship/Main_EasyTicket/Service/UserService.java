@@ -1,22 +1,24 @@
 package com.Internship.Main_EasyTicket.Service;
 
-import com.Internship.Main_EasyTicket.DTO.AddUserRequest;
+import com.Internship.Main_EasyTicket.DTO.UserDTO;
 import com.Internship.Main_EasyTicket.DTO.UserRepository;
 import com.Internship.Main_EasyTicket.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.sql.Timestamp;
 
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
 
-    @Autowired
-    private  UserRepository userRepository;
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
+
+    private  final UserRepository userRepository;
 
 
 
@@ -28,38 +30,48 @@ public class UserService {
     }
 
     public Optional<User> getUserById(Long id) {
+
         return userRepository.findById(id);
     }
 
-    public User createUser(AddUserRequest request) {
-    User user = new User();
-    user.setName(request.name());
-    user.setLast_name(request.last_name());
-    user.setPassword(request.password());
-    user.setEmail(request.email());
-    user.setPhone(request.phone());
+    public User createUser(UserDTO request) {
+    User user = new User( );
+    user.setFirstName(request.getFirstName());
+    user.setLastName(request.getLastName());
+    user.setPassword(request.getPassword());
+    user.setEmail(request.getEmail());
+    user.setPhone(request.getPhone());
 
-    Timestamp now = new Timestamp(System.currentTimeMillis());
+    LocalDateTime now = LocalDateTime.now();
 
-    user.setCreated_at(now);
-    user.setUpdated_at(now);
+    user.setCreatedAt(now);
+    user.setUpdatedAt(now);
 
             return userRepository.save(user);
     }
-    public User updateUser(Long id, AddUserRequest request)
+    public Optional<User> updateUser(Long id, UserDTO request)
     {
-        User user = userRepository.findById(id).get();
-        user.setName(request.name());
-        user.setLast_name(request.last_name());
-        user.setPassword(request.password());
-        user.setEmail(request.email());
-        user.setPhone(request.phone());
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-        user.setUpdated_at(now);
-        return userRepository.save(user);
+
+        Optional<User> existingUser = userRepository.findById(id);
+        if(existingUser.isPresent()) {
+
+            User user = existingUser.get();
+
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setPassword(request.getPassword());
+        user.setEmail(request.getEmail());
+        user.setPhone(request.getPhone());
+        LocalDateTime now = LocalDateTime.now();
+        user.setUpdatedAt(now);
+            userRepository.save(user);
+        return Optional.of(user);
+        }else {
+            return Optional.empty();
+        }
 
     }
-    public void deleteCustomer(Long id){
+    public void deleteUser(Long id){
         userRepository.deleteById(id);
 
 

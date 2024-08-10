@@ -2,10 +2,11 @@ package com.Internship.Main_EasyTicket.controller;
 
 
 
-import com.Internship.Main_EasyTicket.DTO.AddUserRequest;
+import com.Internship.Main_EasyTicket.DTO.UserDTO;
 import com.Internship.Main_EasyTicket.DTO.UserRepository;
 import com.Internship.Main_EasyTicket.Service.UserService;
 import com.Internship.Main_EasyTicket.model.User;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class UserController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<User> createUser(@RequestBody AddUserRequest request) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO request) {
 
         User usertmp = userService.createUser(request);
         return new ResponseEntity<>(usertmp, HttpStatus.CREATED);
@@ -49,16 +50,21 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody AddUserRequest request) {
-        User user =userService.updateUser(id,request);
+    public ResponseEntity<User> updateUser(@PathVariable Long id,@Valid @RequestBody UserDTO request) {
+        Optional<User> user =userService.updateUser(id,request);
+        if (user.isPresent()) {
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        }else {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id){
 
-        userService.deleteCustomer(id);
+        userService.deleteUser(id);
         return new ResponseEntity<>("The user with the ID : " +id +"has been deleted", HttpStatus.OK);
 
 
