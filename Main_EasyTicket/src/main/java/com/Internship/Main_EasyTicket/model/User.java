@@ -2,56 +2,66 @@ package com.Internship.Main_EasyTicket.model;
 
 import jakarta.persistence.*;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="user")
+@Inheritance(strategy = InheritanceType.JOINED) // Specify the inheritance strategy
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column
-    private String name;
-    @Column
-    private String last_name;
 
-    @Column
+    @Column(nullable = false, name = "firstName")
+    private String firstName;
+
+    @Column(nullable = false, name = "lastName")
+    private String lastName;
+
+    @Column(nullable = false, name = "email")
     private String email;
-    @Column
+
+    @Column(nullable = false, name = "phone")
     private String phone;
-    @Column
+
+    @Column(nullable = false, name = "password")
     private String password;
-    @Column
-    private Timestamp created_at;
-    @Column
-    private Timestamp updated_at;
+
+    @Column(nullable = false, name = "createdAt")
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false, name = "updatedAt")
+    private LocalDateTime  updatedAt;
 
 
 //    contstructors
 
 
     public User(Long id,
-                String name,
-                String last_name,
+                String firstName,
+                String lastName,
                 String email,
                 String phone,
                 String password,
-                Timestamp created_at,
-                Timestamp updated_at) {
+                LocalDateTime  createdAt,
+                LocalDateTime  updatedAt) {
         this.id = id;
-        this.name = name;
-        this.last_name = last_name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public User() {
     }
+
+
     //getters and setters
+
 
     public Long getId() {
         return id;
@@ -61,20 +71,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -101,21 +111,19 @@ public class User {
         this.password = password;
     }
 
-    public Timestamp getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Timestamp created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdated_at() {
-        return updated_at;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(Timestamp updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
-
-
 }
