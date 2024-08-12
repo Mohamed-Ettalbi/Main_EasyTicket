@@ -1,7 +1,8 @@
-package com.Internship.Main_EasyTicket.DTO;
+package com.Internship.Main_EasyTicket.DTO.Request;
 
 import jakarta.validation.constraints.*;
-public class UserDTO {
+
+public class UserDTORequest {
 
     @NotBlank(message = "first name can not be blank")
     @Size(min = 2, max = 50)
@@ -28,7 +29,7 @@ public class UserDTO {
 
 
 
-    public UserDTO(String firstName, String lastName, String email, String phone, String password) {
+    public UserDTORequest(String firstName, String lastName, String email, String phone, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -36,7 +37,7 @@ public class UserDTO {
         this.password = password;
     }
 
-    public UserDTO() {
+    public UserDTORequest() {
     }
 
     public String getFirstName() {

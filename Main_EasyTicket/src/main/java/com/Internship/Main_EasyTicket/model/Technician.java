@@ -1,28 +1,43 @@
 package com.Internship.Main_EasyTicket.model;
 
-import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+@Getter
+@Setter
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Technician extends User{
 
-    private Long groupId;
 
-    public Technician() {
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Technician(Long id, String firstName, String lastName, String email, String phone, String password, LocalDateTime createdAt, LocalDateTime updatedAt , Long groupId) {
-        super(id,firstName, lastName, email, phone, password, createdAt, updatedAt);
-        this.groupId = groupId;
-    }
+    @ManyToOne
+    @JoinColumn(name="groupId")
+    @JsonBackReference
+    private Group group;
 
-    public Long getGroupId() {
-        return groupId;
-    }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
+
+//
+//    public Technician(Long id, String firstName, String lastName, String email, String phone, String password, LocalDateTime createdAt, LocalDateTime updatedAt , Long groupId) {
+//        super(id,firstName, lastName, email, phone, password, createdAt, updatedAt);
+//
+//    }
+
+
 
 }

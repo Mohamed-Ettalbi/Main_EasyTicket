@@ -1,15 +1,19 @@
 package com.Internship.Main_EasyTicket.Service;
 
-import com.Internship.Main_EasyTicket.DTO.UserDTO;
-import com.Internship.Main_EasyTicket.DTO.UserRepository;
+import com.Internship.Main_EasyTicket.DTO.Mapper.UserListMapper;
+import com.Internship.Main_EasyTicket.DTO.Mapper.UserMapper;
+import com.Internship.Main_EasyTicket.DTO.Request.UserDTORequest;
+import com.Internship.Main_EasyTicket.DTO.Response.UserDTOResponse;
+import com.Internship.Main_EasyTicket.DAO.UserRepository;
+import com.Internship.Main_EasyTicket.Exceptions.DuplicateEmailException;
+import com.Internship.Main_EasyTicket.Exceptions.NoContentException;
+import com.Internship.Main_EasyTicket.Exceptions.UserNotFoundException;
 import com.Internship.Main_EasyTicket.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,58 +27,129 @@ public class UserService {
 
 
 
-    public List<User> getAllUsers(){
+    public List<UserDTOResponse> getAllUsers(){
+
 
         List<User> users = userRepository.findAll();
-        return users;
+//                .stream().map(user->new UserDTOResponse(
+//                user.getId(),user.getFirstName(),user.getLastName(),
+//                user.getEmail(),user.getPhone(),user.getIsApproved())).collect(Collectors.toList());
+
+
+        if(users.isEmpty()) {
+            throw new NoContentException("there is no User currently in the system");
+        }else
+        {
+
+            List<UserDTOResponse> userListResponse = UserListMapper.mapToUserDTORespnse(users);
+            return userListResponse;
+
+        }
+
+
     }
 
-    public Optional<User> getUserById(Long id) {
+    public UserDTOResponse getUserById(Long id) {
 
-        return userRepository.findById(id);
+
+     User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(
+              "the User with the ID: "+id +
+                      " Does Not Exist") );
+
+     UserDTOResponse userDTOResponse = UserMapper.mapToUserDTORespnse(user);
+     return userDTOResponse;
+
+
     }
 
-    public User createUser(UserDTO request) {
-    User user = new User( );
-    user.setFirstName(request.getFirstName());
-    user.setLastName(request.getLastName());
-    user.setPassword(request.getPassword());
-    user.setEmail(request.getEmail());
-    user.setPhone(request.getPhone());
 
-    LocalDateTime now = LocalDateTime.now();
 
-    user.setCreatedAt(now);
-    user.setUpdatedAt(now);
 
-            return userRepository.save(user);
-    }
-    public Optional<User> updateUser(Long id, UserDTO request)
+
+    public UserDTOResponse createUser(UserDTORequest request) {
+        boolean emailExists= userRepository.existsByEmailIgnoreCase(request.getEmail());
+
+        if(emailExists){
+            throw new DuplicateEmailException("the email  "+request.getEmail()+" is already In Use ");
+        }else {
+
+            User user = new User();
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
+            user.setPassword(request.getPassword());
+            user.setEmail(request.getEmail());
+            user.setPhone(request.getPhone());
+            LocalDateTime now = LocalDateTime.now();
+
+            user.setCreatedAt(now);
+            user.setUpdatedAt(now);
+
+            userRepository.save(user);
+            UserDTOResponse userDTOResponse = UserMapper.mapToUserDTORespnse(user);
+            return userDTOResponse;
+        }
+        }
+    public UserDTOResponse updateUser(Long id, UserDTORequest request)
     {
 
-        Optional<User> existingUser = userRepository.findById(id);
-        if(existingUser.isPresent()) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(()->new UserNotFoundException( "the User with the ID: "+id +
+                " Does Not Exist"));
 
-            User user = existingUser.get();
+             boolean emailExists= userRepository.existsByEmailIgnoreCase(request.getEmail());
+             boolean emailBelongToExistingUser= existingUser.getEmail().equals(request.getEmail());
+            if(emailExists && !emailBelongToExistingUser){
 
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setPassword(request.getPassword());
-        user.setEmail(request.getEmail());
-        user.setPhone(request.getPhone());
-        LocalDateTime now = LocalDateTime.now();
-        user.setUpdatedAt(now);
-            userRepository.save(user);
-        return Optional.of(user);
-        }else {
-            return Optional.empty();
-        }
+
+                throw new DuplicateEmailException("the  email  "+request.getEmail()+"   already In Use ");
+            }else {
+
+
+
+                existingUser.setFirstName(request.getFirstName());
+                existingUser.setLastName(request.getLastName());
+                existingUser.setPassword(request.getPassword());
+                existingUser.setEmail(request.getEmail());
+                existingUser.setPhone(request.getPhone());
+                LocalDateTime now = LocalDateTime.now();
+                existingUser.setUpdatedAt(now);
+                userRepository.save(existingUser);
+
+                UserDTOResponse userDTOResponse = UserMapper.mapToUserDTORespnse(existingUser);
+                return userDTOResponse;
+
+            }
 
     }
     public void deleteUser(Long id){
-        userRepository.deleteById(id);
 
+       if (userRepository.findById(id).isPresent()) {
+           userRepository.deleteById(id);
 
+       }else{
+           throw new UserNotFoundException("the User with the ID: "+id +" Does Not Exist");
+       }
+
+    }
+    public UserDTOResponse approveUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("the User with the ID: "+id +" Does Not Exist"));
+
+        user.setIsApproved(true);
+        userRepository.save(user);
+        UserDTOResponse userDTOResponse = UserMapper.mapToUserDTORespnse(user);
+
+        return userDTOResponse;
+    }
+
+    public UserDTOResponse disableUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("the User with the ID: "+id +" Does Not Exist"));
+
+        user.setIsApproved(false);
+        userRepository.save(user);
+        UserDTOResponse userDTOResponse = UserMapper.mapToUserDTORespnse(user);
+        return userDTOResponse;
     }
 
 }
