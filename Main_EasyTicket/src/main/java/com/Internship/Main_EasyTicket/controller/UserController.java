@@ -1,11 +1,9 @@
 package com.Internship.Main_EasyTicket.controller;
 
-
-
-import com.Internship.Main_EasyTicket.DTO.UserDTO;
-import com.Internship.Main_EasyTicket.DTO.UserRepository;
+import com.Internship.Main_EasyTicket.DTO.Request.UserDTORequest;
+import com.Internship.Main_EasyTicket.DTO.Response.UserDTOResponse;
+import com.Internship.Main_EasyTicket.DAO.UserRepository;
 import com.Internship.Main_EasyTicket.Service.UserService;
-import com.Internship.Main_EasyTicket.model.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -26,39 +23,45 @@ public class UserController {
 //get all users in List format
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserDTOResponse>> getAllUsers() {
+
+        List<UserDTOResponse> users = userService.getAllUsers();
+
         return new ResponseEntity<>(users, HttpStatus.OK);
 
     }
 
+
     //get one user as requested by id
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id){
-         Optional<User> user= userService.getUserById(id);
-        return new ResponseEntity<>(user.get(), HttpStatus.OK);
+    public ResponseEntity<UserDTOResponse> getUserById(@PathVariable Long id){
 
-    }
+         UserDTOResponse user= userService.getUserById(id);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+
+         }
+
+
 
 
     @PostMapping("/add")
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO request) {
+    public ResponseEntity<UserDTOResponse> createUser(@Valid @RequestBody UserDTORequest request) {
 
-        User usertmp = userService.createUser(request);
+        UserDTOResponse usertmp = userService.createUser(request);
+
         return new ResponseEntity<>(usertmp, HttpStatus.CREATED);
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id,@Valid @RequestBody UserDTO request) {
-        Optional<User> user =userService.updateUser(id,request);
-        if (user.isPresent()) {
+    public ResponseEntity<UserDTOResponse> updateUser(@PathVariable Long id,@Valid @RequestBody UserDTORequest request) {
 
-            return new ResponseEntity<>(user.get(), HttpStatus.OK);
-        }else {
 
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        UserDTOResponse user =userService.updateUser(id,request);
+
+            return new ResponseEntity<>(user,HttpStatus.OK);
+
     }
 
     @DeleteMapping("/{id}")
@@ -69,6 +72,7 @@ public class UserController {
 
 
     }
+
 
 
 }
