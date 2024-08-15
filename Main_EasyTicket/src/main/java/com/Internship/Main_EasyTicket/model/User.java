@@ -3,17 +3,25 @@ package com.Internship.Main_EasyTicket.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-@Getter
-@Setter
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @SuperBuilder
 @Table(name="user")
 @Inheritance(strategy = InheritanceType.JOINED) // Specify the inheritance strategy
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,18 +52,52 @@ public class User {
     @Builder.Default
     private Boolean isApproved =false;
 
-    public User(Long id, String firstName, String lastName, String email, String phone, String password, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
+
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
+        return roles.stream().map(
+                role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList());
+
+
     }
 
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
+    @Override
+    public String getUsername() {
+
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;}
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isApproved;
+    }
 
 
     //    contstructors

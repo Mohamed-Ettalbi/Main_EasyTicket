@@ -1,10 +1,7 @@
 package com.Internship.Main_EasyTicket.controller;
 
-import com.Internship.Main_EasyTicket.DTO.Request.UserDTORequest;
-import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
-import com.Internship.Main_EasyTicket.DTO.Response.UserDTOResponse;
+import com.Internship.Main_EasyTicket.DTO.UserDTO;
 import com.Internship.Main_EasyTicket.Service.EmployeeService;
-import com.Internship.Main_EasyTicket.model.Employee;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +18,16 @@ public class EmployeeController {
     public EmployeeService employeeService;
 
     @PostMapping("/add")
-    public ResponseEntity<UserDTOResponse> addEmployee(@RequestBody @Valid UserDTORequest request) {
-      UserDTOResponse  employeeResponse = employeeService.createEmployee(request);
+    public ResponseEntity<UserDTO> addEmployee(@RequestBody @Valid UserDTO request) {
+      UserDTO employeeResponse = employeeService.createEmployee(request);
       return new ResponseEntity<>(employeeResponse, HttpStatus.CREATED);
 
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserDTOResponse>> getAllEmployee(){
+    @GetMapping("/all")
+    public ResponseEntity<List<UserDTO>> getAllEmployee(){
 
-        List<UserDTOResponse> employeeList = employeeService.getAllEmployee();
+        List<UserDTO> employeeList = employeeService.getAllEmployee();
         return new ResponseEntity<>(employeeList,HttpStatus.OK);
 
 

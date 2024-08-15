@@ -1,18 +1,15 @@
 package com.Internship.Main_EasyTicket.controller;
 
 import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
-import com.Internship.Main_EasyTicket.DTO.Response.UserDTOResponse;
+import com.Internship.Main_EasyTicket.DTO.UserDTO;
 import com.Internship.Main_EasyTicket.DAO.UserRepository;
 import com.Internship.Main_EasyTicket.Service.AdminService;
 import com.Internship.Main_EasyTicket.Service.GroupService;
 import com.Internship.Main_EasyTicket.Service.UserService;
-import com.Internship.Main_EasyTicket.model.Technician;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -32,18 +29,18 @@ public class AdminController {
         this.userService = userService;
     }
     @PutMapping("/approve/{id}")
-    public ResponseEntity<UserDTOResponse> approuveUser(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> approuveUser(@PathVariable Long id) {
 
-        UserDTOResponse user = userService.approveUser(id);
+        UserDTO user = userService.approveUser(id);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
 
 
     }
     @PutMapping("/disable/{id}")
-    public ResponseEntity<UserDTOResponse> disableUser(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> disableUser(@PathVariable Long id) {
 
-        UserDTOResponse user = userService.disableUser(id);
+        UserDTO user = userService.disableUser(id);
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
     

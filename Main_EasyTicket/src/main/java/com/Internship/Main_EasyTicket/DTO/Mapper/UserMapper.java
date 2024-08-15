@@ -1,25 +1,24 @@
 package com.Internship.Main_EasyTicket.DTO.Mapper;
 
-import com.Internship.Main_EasyTicket.DTO.Response.UserDTOResponse;
+import com.Internship.Main_EasyTicket.DTO.UserDTO;
 import com.Internship.Main_EasyTicket.model.User;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserMapper {
 
 
-    public static UserDTOResponse mapToUserDTORespnse(User user) {
+    public static UserDTO mapToUserDTORespnse(User user) {
 
 
-        return  new UserDTOResponse(
-                        user.getId(),
+        return  new UserDTO(
                         user.getFirstName(),
                         user.getLastName(),
                         user.getEmail(),
                         user.getPhone()
+                         ,user.getPassword()
                         ,user.getIsApproved()
+                , String.valueOf(user.getRoles())
                 );
+
 
 
 

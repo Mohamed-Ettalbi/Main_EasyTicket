@@ -1,7 +1,9 @@
 package com.Internship.Main_EasyTicket.Service;
 
 import com.Internship.Main_EasyTicket.DAO.*;
-import com.Internship.Main_EasyTicket.DTO.Mapper.TechnicianMapper;
+import com.Internship.Main_EasyTicket.DTO.GroupDTO;
+import com.Internship.Main_EasyTicket.DTO.Mapper.GroupMapper;
+import com.Internship.Main_EasyTicket.DTO.Mapper.TechnicianListMapper;
 import com.Internship.Main_EasyTicket.DTO.Request.AddGroupDTORequest;
 import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
 import com.Internship.Main_EasyTicket.Exceptions.DuplicateGroupNameException;
@@ -85,12 +87,16 @@ public class GroupService {
         return groups;
         }
     }
-    public Group getGroupById(Long id) {
+    public GroupDTO getGroupById(Long id) {
 
         Group group = groupRepository.findById(id)
                 .orElseThrow(() -> new GroupNotFoundException("Group with ID " + id + " not found."));
-        return group;
+        GroupDTO groupDTO= GroupMapper.mapGroupToGorupDTO(group);
+        System.out.println(groupDTO);
+        return groupDTO;
     }
+
+
     public TechnicianDTOResponse addTechnicianToGroup(Long groupid, Long technicianId){
 
         Group group = groupRepository.findById(groupid)
@@ -124,7 +130,7 @@ public class GroupService {
         if (techniciansList.isEmpty()) {
             throw new TechnicianNotFoundException("There is no Technician in the Group with The Id:  " + groupid + "  .");
         }else{
-            List<TechnicianDTOResponse> technicianDTOResponseList= TechnicianMapper.mapToTechnicianDTORespnse(techniciansList);
+            List<TechnicianDTOResponse> technicianDTOResponseList= TechnicianListMapper.mapToTechnicianDTORespnse(techniciansList);
 
             return technicianDTOResponseList;
         }
