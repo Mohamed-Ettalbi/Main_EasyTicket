@@ -2,8 +2,7 @@ package com.Internship.Main_EasyTicket.Service;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.Internship.Main_EasyTicket.DTO.Request.UserDTORequest;
-import com.Internship.Main_EasyTicket.DTO.Response.UserDTOResponse;
+import com.Internship.Main_EasyTicket.DTO.UserDTO;
 import com.Internship.Main_EasyTicket.DAO.UserRepository;
 import com.Internship.Main_EasyTicket.Exceptions.DuplicateEmailException;
 import com.Internship.Main_EasyTicket.Exceptions.UserNotFoundException;
@@ -63,7 +62,7 @@ class UserServiceTest {
 
         when(userRepository.findAll()).thenReturn(List.of(user1,user2));
         //when
-       List<UserDTOResponse> result= underTest.getAllUsers();
+       List<UserDTO> result= underTest.getAllUsers();
         //then
         assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(2);
@@ -94,7 +93,7 @@ class UserServiceTest {
 
         //when
 
-        UserDTOResponse newUser = underTest.getUserById(1L);
+        UserDTO newUser = underTest.getUserById(1L);
 
 //    verify(userRepository).findById(user.getId());
 
@@ -113,7 +112,7 @@ class UserServiceTest {
     @Test
     void canCreateUser() {
         // Given
-        UserDTORequest userDTORequest = new UserDTORequest("mohamed",
+        UserDTO userDTO = new UserDTO("mohamed",
                 "ettalbi",
                 "mohamed@ettalbi",
                 "lkqjfmlqkdjfmq",
@@ -122,7 +121,7 @@ class UserServiceTest {
 
         // When
         LocalDateTime before = LocalDateTime.now();
-        underTest.createUser(userDTORequest);
+        underTest.createUser(userDTO);
         LocalDateTime after = LocalDateTime.now();
 
         // Then
@@ -132,11 +131,11 @@ class UserServiceTest {
 
         User capturedUser = argumentCaptor.getValue();
 
-        assertThat(capturedUser.getFirstName()).isEqualTo(userDTORequest.getFirstName());
-        assertThat(capturedUser.getLastName()).isEqualTo(userDTORequest.getLastName());
-        assertThat(capturedUser.getEmail()).isEqualTo(userDTORequest.getEmail());
-        assertThat(capturedUser.getPhone()).isEqualTo(userDTORequest.getPhone());
-        assertThat(capturedUser.getPassword()).isEqualTo(userDTORequest.getPassword());
+        assertThat(capturedUser.getFirstName()).isEqualTo(userDTO.getFirstName());
+        assertThat(capturedUser.getLastName()).isEqualTo(userDTO.getLastName());
+        assertThat(capturedUser.getEmail()).isEqualTo(userDTO.getEmail());
+        assertThat(capturedUser.getPhone()).isEqualTo(userDTO.getPhone());
+        assertThat(capturedUser.getPassword()).isEqualTo(userDTO.getPassword());
 
         assertThat(capturedUser.getCreatedAt()).isAfterOrEqualTo(before).isBeforeOrEqualTo(after);
         assertThat(capturedUser.getUpdatedAt()).isAfterOrEqualTo(before).isBeforeOrEqualTo(after);
@@ -166,7 +165,7 @@ class UserServiceTest {
 
 
         //new Values for the existing user
-        UserDTORequest userDTORequest = new UserDTORequest("updatedname",
+        UserDTO userDTO = new UserDTO("updatedname",
                 "updatedlastname",
                 "updated@ettalbi",
                 "jjjjjj",
@@ -175,7 +174,7 @@ class UserServiceTest {
 
         //when
         Long mockedUserID = mockedUser.getId();
-        underTest.updateUser(mockedUserID, userDTORequest);
+        underTest.updateUser(mockedUserID, userDTO);
 
 
         //then
@@ -188,11 +187,11 @@ class UserServiceTest {
 
         // Values that should staty equal
 
-        assertThat(capturedUser.getFirstName()).isEqualTo(userDTORequest.getFirstName());
-        assertThat(capturedUser.getLastName()).isEqualTo(userDTORequest.getLastName());
-        assertThat(capturedUser.getEmail()).isEqualTo(userDTORequest.getEmail());
-        assertThat(capturedUser.getPassword()).isEqualTo(userDTORequest.getPassword());
-        assertThat(capturedUser.getPhone()).isEqualTo(userDTORequest.getPhone());
+        assertThat(capturedUser.getFirstName()).isEqualTo(userDTO.getFirstName());
+        assertThat(capturedUser.getLastName()).isEqualTo(userDTO.getLastName());
+        assertThat(capturedUser.getEmail()).isEqualTo(userDTO.getEmail());
+        assertThat(capturedUser.getPassword()).isEqualTo(userDTO.getPassword());
+        assertThat(capturedUser.getPhone()).isEqualTo(userDTO.getPhone());
         assertThat(capturedUser.getCreatedAt()).isEqualTo(LocalDateTime.of(2024, 8, 10, 6, 50, 10));
 
         //the value that should be different
@@ -221,14 +220,14 @@ class UserServiceTest {
 
 
         //new Values for the existing user
-            UserDTORequest userDTORequest = new UserDTORequest("updatedname",
+            UserDTO userDTO = new UserDTO("updatedname",
                     "updatedlastname",
                     "mohamed@ettalbi",
                     "jjjjjj",
                     "00000000000");
 
         //when
-        underTest.updateUser(mockedUser.getId(),userDTORequest);
+        underTest.updateUser(mockedUser.getId(), userDTO);
 
         //then
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -236,11 +235,11 @@ class UserServiceTest {
 
         User capturedUser = argumentCaptor.getValue();
 
-        assertThat(capturedUser.getFirstName()).isEqualTo(userDTORequest.getFirstName());
-        assertThat(capturedUser.getLastName()).isEqualTo(userDTORequest.getLastName());
-        assertThat(capturedUser.getEmail()).isEqualTo(userDTORequest.getEmail());
-        assertThat(capturedUser.getPassword()).isEqualTo(userDTORequest.getPassword());
-        assertThat(capturedUser.getPhone()).isEqualTo(userDTORequest.getPhone());
+        assertThat(capturedUser.getFirstName()).isEqualTo(userDTO.getFirstName());
+        assertThat(capturedUser.getLastName()).isEqualTo(userDTO.getLastName());
+        assertThat(capturedUser.getEmail()).isEqualTo(userDTO.getEmail());
+        assertThat(capturedUser.getPassword()).isEqualTo(userDTO.getPassword());
+        assertThat(capturedUser.getPhone()).isEqualTo(userDTO.getPhone());
         assertThat(capturedUser.getCreatedAt()).isEqualTo(LocalDateTime.of(2024, 8, 10, 6, 50, 10));
 
         //the value that should be different
@@ -265,7 +264,7 @@ class UserServiceTest {
                 LocalDateTime.of(2024, 8, 10, 6, 50, 10));
 
                 //new Values for the existing user
-                        UserDTORequest userDTORequest = new UserDTORequest("updatedname",
+                        UserDTO userDTO = new UserDTO("updatedname",
                  "updatedlastname",
                     "mohamed333@ettalbi",
                     "jjjjjj",
@@ -275,14 +274,14 @@ class UserServiceTest {
 
         // return the existing User
         when(userRepository.findById(1L)).thenReturn(Optional.of(mockedUser));
-        when(userRepository.existsByEmailIgnoreCase(userDTORequest.getEmail())).thenReturn(true);
+        when(userRepository.existsByEmailIgnoreCase(userDTO.getEmail())).thenReturn(true);
 
         //THE UPDATED EMAIL
 
         //then
-       assertThatThrownBy(()->underTest.updateUser(mockedUser.getId(),userDTORequest))
+       assertThatThrownBy(()->underTest.updateUser(mockedUser.getId(), userDTO))
                .isInstanceOf(DuplicateEmailException.class)
-               .hasMessageContaining("the  email  "+userDTORequest.getEmail()+"   already In Use ");
+               .hasMessageContaining("the  email  "+ userDTO.getEmail()+"   already In Use ");
 
 
 
@@ -291,7 +290,7 @@ class UserServiceTest {
     @Test
     void canThrowDuplicateMailException(){
      //given
-        UserDTORequest userDTORequest = new UserDTORequest("updatedname",
+        UserDTO userDTO = new UserDTO("updatedname",
                 "updatedlastname",
                 "updated@ettalbi",
                 "jjjjjj",
@@ -300,12 +299,12 @@ class UserServiceTest {
 
     //when
                         // we make sure that existWithSameMail will return TRUE
-        given(userRepository.existsByEmailIgnoreCase(userDTORequest.getEmail())).willReturn(true);
+        given(userRepository.existsByEmailIgnoreCase(userDTO.getEmail())).willReturn(true);
 
-        assertThatThrownBy(()-> underTest.createUser(userDTORequest))
+        assertThatThrownBy(()-> underTest.createUser(userDTO))
                 .isInstanceOf(DuplicateEmailException.class)
                 .hasMessageContaining(
-                 "the email  "+userDTORequest.getEmail()+" is already In Use ");
+                 "the email  "+ userDTO.getEmail()+" is already In Use ");
 
 
                         //we just verify because we know that it will never progress to save student
@@ -361,7 +360,7 @@ class UserServiceTest {
     void canThrowExceptionWhenUserNotFoundForUpdate(){
     //Given
         Long id = 1L;
-        UserDTORequest user = new UserDTORequest(
+        UserDTO user = new UserDTO(
                 "mohamed",
                 "ettalbi",
                 "mohamed@ettalbi",

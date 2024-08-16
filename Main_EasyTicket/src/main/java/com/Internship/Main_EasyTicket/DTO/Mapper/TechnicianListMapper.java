@@ -3,22 +3,26 @@ package com.Internship.Main_EasyTicket.DTO.Mapper;
 import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
 import com.Internship.Main_EasyTicket.model.Technician;
 
-public class TechnicianMapper {
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class TechnicianListMapper {
 
 
-    public static TechnicianDTOResponse mapToTechnicianDTORespnse(Technician  technician) {
+    public static List <TechnicianDTOResponse> mapToTechnicianDTORespnse(List<Technician> technicians) {
 
 
-        return  new TechnicianDTOResponse(
+        return technicians.stream().map(
+                technician -> new TechnicianDTOResponse(
                         technician.getId(),
                         technician.getFirstName(),
                         technician.getLastName(),
                         technician.getEmail(),
-                        technician.getPhone(),
-                        technician.getIsApproved(),
+                        technician.getPhone()
+                        ,technician.getIsApproved(),
                         technician.getGroup() != null ? technician.getGroup().getName() : null
+                )).collect(Collectors.toList());
 
-        );
 
 
 

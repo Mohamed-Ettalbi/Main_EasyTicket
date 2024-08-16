@@ -1,8 +1,7 @@
 package com.Internship.Main_EasyTicket.controller;
 
-import com.Internship.Main_EasyTicket.DTO.Request.UserDTORequest;
+import com.Internship.Main_EasyTicket.DTO.UserDTO;
 import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
-import com.Internship.Main_EasyTicket.DTO.Response.UserDTOResponse;
 import com.Internship.Main_EasyTicket.Service.TechnicianService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +19,10 @@ public class TechnicianController {
     public TechnicianService technicianService;
 
     @PostMapping("/add")
-    public ResponseEntity<UserDTOResponse> createTechnician(@RequestBody @Valid UserDTORequest request){
+    public ResponseEntity<TechnicianDTOResponse> createTechnician(@RequestBody @Valid UserDTO request){
 
 
-        UserDTOResponse technician=technicianService.createTechnician(request);
+        TechnicianDTOResponse technician=technicianService.createTechnician(request);
         return new ResponseEntity<>(technician, HttpStatus.CREATED);
 
 

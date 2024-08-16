@@ -1,6 +1,7 @@
 package com.Internship.Main_EasyTicket.controller;
 
 
+import com.Internship.Main_EasyTicket.DTO.GroupDTO;
 import com.Internship.Main_EasyTicket.DTO.Request.AddGroupDTORequest;
 import com.Internship.Main_EasyTicket.DAO.AdminRepository;
 import com.Internship.Main_EasyTicket.DAO.UserRepository;
@@ -55,9 +56,9 @@ public class GroupController {
         return new ResponseEntity<>(groups, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Group> getGroupById(@PathVariable Long id){
+    public ResponseEntity<GroupDTO> getGroupById(@PathVariable Long id){
 
-        Group group = groupService.getGroupById(id);
+        GroupDTO group = groupService.getGroupById(id);
         return new ResponseEntity<>(group, HttpStatus.OK);
     }
     @GetMapping("/group/{id}/technicians")

@@ -1,7 +1,6 @@
 package com.Internship.Main_EasyTicket.controller;
 
-import com.Internship.Main_EasyTicket.DTO.Request.UserDTORequest;
-import com.Internship.Main_EasyTicket.DTO.Response.UserDTOResponse;
+import com.Internship.Main_EasyTicket.DTO.UserDTO;
 import com.Internship.Main_EasyTicket.DAO.UserRepository;
 import com.Internship.Main_EasyTicket.Service.UserService;
 import jakarta.validation.Valid;
@@ -23,9 +22,9 @@ public class UserController {
 //get all users in List format
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserDTOResponse>> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
 
-        List<UserDTOResponse> users = userService.getAllUsers();
+        List<UserDTO> users = userService.getAllUsers();
 
         return new ResponseEntity<>(users, HttpStatus.OK);
 
@@ -34,9 +33,9 @@ public class UserController {
 
     //get one user as requested by id
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTOResponse> getUserById(@PathVariable Long id){
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id){
 
-         UserDTOResponse user= userService.getUserById(id);
+         UserDTO user= userService.getUserById(id);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
 
@@ -46,19 +45,19 @@ public class UserController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<UserDTOResponse> createUser(@Valid @RequestBody UserDTORequest request) {
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO request) {
 
-        UserDTOResponse usertmp = userService.createUser(request);
+        UserDTO usertmp = userService.createUser(request);
 
         return new ResponseEntity<>(usertmp, HttpStatus.CREATED);
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTOResponse> updateUser(@PathVariable Long id,@Valid @RequestBody UserDTORequest request) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO request) {
 
 
-        UserDTOResponse user =userService.updateUser(id,request);
+        UserDTO user =userService.updateUser(id,request);
 
             return new ResponseEntity<>(user,HttpStatus.OK);
 
