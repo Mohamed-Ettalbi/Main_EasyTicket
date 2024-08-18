@@ -5,6 +5,7 @@ import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
 import com.Internship.Main_EasyTicket.model.Group;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -12,6 +13,8 @@ public class GroupMapper {
 
 
     public static GroupDTO mapGroupToGorupDTO(Group group){
+        if(group.getTechnicians() == null)
+            group.setTechnicians(new ArrayList<>());
 
         List<TechnicianDTOResponse> technicianDTOResponseList = TechnicianListMapper.mapToTechnicianDTORespnse(group.getTechnicians());
 
@@ -23,8 +26,8 @@ public class GroupMapper {
         );
 
 
+    }}
 
 
-    }
 
-}
+

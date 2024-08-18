@@ -41,6 +41,10 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
         public ResponseEntity<String> handleGroupNotFoundException(GroupNotFoundException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
+        @ExceptionHandler(TechnicianNotFoundException.class)
+        public ResponseEntity<String> handleTechnicianNotFoundException(TechnicianNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
 
     }
 

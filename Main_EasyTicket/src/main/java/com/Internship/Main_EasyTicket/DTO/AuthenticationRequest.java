@@ -1,4 +1,4 @@
-package com.Internship.Main_EasyTicket.config;
+package com.Internship.Main_EasyTicket.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,5 +13,6 @@ public class AuthenticationRequest {
         private String password;
 
         // Getters and setters
+
 
 }
