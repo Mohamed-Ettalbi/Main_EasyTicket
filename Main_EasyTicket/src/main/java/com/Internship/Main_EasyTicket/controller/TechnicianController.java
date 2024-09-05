@@ -38,6 +38,15 @@ public class TechnicianController {
 
 
     }
+    @GetMapping()
+    public ResponseEntity<TechnicianDTOResponse> getTechnicianByEmail(@RequestParam("email") String email){
+
+        TechnicianDTOResponse technicianList = technicianService.getTechnicianByEmail(email);
+        return new ResponseEntity<>(technicianList,HttpStatus.OK);
+
+
+
+    }
 
 
 }

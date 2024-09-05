@@ -1,7 +1,7 @@
 package com.Internship.Main_EasyTicket.Service;
 
 
-import com.Internship.Main_EasyTicket.DAO.EmployeeRepository;
+import com.Internship.Main_EasyTicket.dao.EmployeeRepository;
 import com.Internship.Main_EasyTicket.DTO.Mapper.EmployeeListMapper;
 import com.Internship.Main_EasyTicket.DTO.Mapper.UserMapper;
 import com.Internship.Main_EasyTicket.DTO.UserDTO;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeService {

@@ -18,7 +18,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
         @ExceptionHandler(DuplicateEmailException.class)
         public ResponseEntity<String> handleDuplicateEmailException(DuplicateEmailException ex) {
 
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
         }
         @ExceptionHandler(UserNotFoundException.class)
         public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex) {
@@ -34,7 +34,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
         @ExceptionHandler(DuplicateGroupNameException.class)
         public ResponseEntity<String> handleDuplicateGroupNameException(DuplicateGroupNameException ex) {
 
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
         }
 
         @ExceptionHandler(GroupNotFoundException.class)
@@ -44,6 +44,10 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
         @ExceptionHandler(TechnicianNotFoundException.class)
         public ResponseEntity<String> handleTechnicianNotFoundException(TechnicianNotFoundException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        @ExceptionHandler(IllegalArgumentException.class)
+        public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
     }

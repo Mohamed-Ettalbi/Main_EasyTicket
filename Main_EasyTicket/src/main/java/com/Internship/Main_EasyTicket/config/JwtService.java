@@ -8,6 +8,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import java.util.stream.Collectors;
 
 
 import java.security.Key;
@@ -60,6 +61,11 @@ public class JwtService {
             Map<String , Object> extraClaims
             , UserDetails userDetails
     ){
+        // Add the role to the extra claims
+        extraClaims.put("role", userDetails.getAuthorities().stream()
+             .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .collect(Collectors.toList()));
+
 
 
         return Jwts.builder()
@@ -74,6 +80,7 @@ public class JwtService {
 
 
     }
+
 
     private Claims extractClaims(String token){
 
@@ -91,8 +98,6 @@ public class JwtService {
 //                    .build()
 //                    .parseSignedClaims(token)
 //                    .getPayload();
-
-
 
 
     }

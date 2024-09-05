@@ -1,10 +1,11 @@
 package com.Internship.Main_EasyTicket.Service;
 
-import com.Internship.Main_EasyTicket.DAO.*;
+import com.Internship.Main_EasyTicket.dao.*;
 import com.Internship.Main_EasyTicket.DTO.GroupDTO;
 import com.Internship.Main_EasyTicket.DTO.Mapper.GroupListMapper;
 import com.Internship.Main_EasyTicket.DTO.Mapper.GroupMapper;
 import com.Internship.Main_EasyTicket.DTO.Mapper.TechnicianListMapper;
+import com.Internship.Main_EasyTicket.DTO.Mapper.TechnicianMapper;
 import com.Internship.Main_EasyTicket.DTO.Request.AddGroupDTORequest;
 import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
 import com.Internship.Main_EasyTicket.Exceptions.DuplicateGroupNameException;
@@ -38,7 +39,8 @@ public class GroupService {
             throw new DuplicateGroupNameException("A group with the name " + addGroupDTORequest.getGroupName() + " already exists.");
         }else{
 
-            Group group = new Group(addGroupDTORequest.getGroupName(), addGroupDTORequest.getGroupDescription());
+//            Group group = new Group(addGroupDTORequest.getGroupName(), addGroupDTORequest.getGroupDescription());
+            Group group = GroupMapper.mapGroupDTOToGorupEntity(addGroupDTORequest);
             group.setCreatedAt(LocalDateTime.now());
             group.setUpdatedAt(LocalDateTime.now());
 
@@ -117,14 +119,8 @@ public class GroupService {
         group.getTechnicians().add(technician);
         groupRepository.save(group);
         technicianRepository.save(technician);
-         return new TechnicianDTOResponse(technician.getId(),
-                technician.getFirstName(),
-                technician.getLastName(),
-                technician.getEmail(),
-                technician.getPhone(),technician.getIsApproved(),
-                technician.getGroup().getName());
-
-
+         TechnicianDTOResponse response= TechnicianMapper.mapToTechnicianDTORespnse(technician);
+         return response;
     }
 
     public List<TechnicianDTOResponse> getAllTechniciansOfGroup(Long groupid) {

@@ -24,7 +24,8 @@ public class TechnicianDTOResponse {
 
     private Boolean isApproved ;
 
-    private String groupId;
+    private Long groupId;
+    private String role;
 
 
 

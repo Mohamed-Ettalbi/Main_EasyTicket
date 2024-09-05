@@ -1,7 +1,6 @@
-package com.Internship.Main_EasyTicket.DAO;
+package com.Internship.Main_EasyTicket.dao;
 
 import com.Internship.Main_EasyTicket.model.Group;
-import com.Internship.Main_EasyTicket.model.Technician;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

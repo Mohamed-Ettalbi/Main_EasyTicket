@@ -1,7 +1,7 @@
 package com.Internship.Main_EasyTicket.controller;
 
 import com.Internship.Main_EasyTicket.DTO.UserDTO;
-import com.Internship.Main_EasyTicket.DAO.UserRepository;
+import com.Internship.Main_EasyTicket.dao.UserRepository;
 import com.Internship.Main_EasyTicket.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

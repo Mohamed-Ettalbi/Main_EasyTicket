@@ -1,19 +1,26 @@
 package com.Internship.Main_EasyTicket.Service;
 
-import com.Internship.Main_EasyTicket.DAO.EmployeeRepository;
-import com.Internship.Main_EasyTicket.DAO.TechnicianRepository;
-import com.Internship.Main_EasyTicket.DAO.UserRepository;
+import com.Internship.Main_EasyTicket.dao.EmployeeRepository;
+import com.Internship.Main_EasyTicket.dao.TechnicianRepository;
+import com.Internship.Main_EasyTicket.dao.UserRepository;
 import com.Internship.Main_EasyTicket.DTO.AuthenticationRequest;
+import com.Internship.Main_EasyTicket.DTO.AuthenticationResponse;
+import com.Internship.Main_EasyTicket.DTO.Mapper.EmployeeMapper;
+import com.Internship.Main_EasyTicket.DTO.Mapper.TechnicianMapper;
+import com.Internship.Main_EasyTicket.DTO.Mapper.UserMapper;
+import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
 import com.Internship.Main_EasyTicket.Exceptions.DuplicateEmailException;
 import com.Internship.Main_EasyTicket.Exceptions.UserNotFoundException;
 import com.Internship.Main_EasyTicket.config.JwtService;
 import com.Internship.Main_EasyTicket.model.Employee;
 import com.Internship.Main_EasyTicket.model.Role;
 import com.Internship.Main_EasyTicket.model.Technician;
+import com.Internship.Main_EasyTicket.model.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.Internship.Main_EasyTicket.DTO.UserDTO;
@@ -38,13 +45,15 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public String register(UserDTO request){
+    @Transactional
+    public AuthenticationResponse register(UserDTO request){
         boolean emailExists = userRepository.existsByEmailIgnoreCase(request.getEmail());
         if (emailExists) {
             throw new DuplicateEmailException("The email " + request.getEmail() + " is already in use.");
         }
 
         Role selectedRole;
+
         if ("TECHNICIAN".equalsIgnoreCase(request.getRole())) {
             selectedRole = Role.ROLE_TECHNICIAN;
             Technician technician = Technician.builder()
@@ -60,7 +69,9 @@ public class AuthService {
                     .build();
             technicianRepository.save(technician);
             String jwtToken = jwtService.generateToken(technician);
-            return jwtToken;
+            TechnicianDTOResponse response = TechnicianMapper.mapToTechnicianDTORespnse(technician);
+
+            return new AuthenticationResponse(jwtToken,response);
         } else if ("EMPLOYEE".equalsIgnoreCase(request.getRole())) {
             selectedRole = Role.ROLE_EMPLOYEE;
             Employee employee = Employee.builder()
@@ -76,7 +87,8 @@ public class AuthService {
                     .build();
             employeeRepository.save(employee);
             String jwtToken = jwtService.generateToken(employee);
-            return jwtToken;
+            UserDTO response = EmployeeMapper.mapEmployeeToUserDTORespnse(employee);
+            return new AuthenticationResponse(jwtToken,response);
 
         } else {
             throw new IllegalArgumentException("Invalid Request ");
@@ -84,19 +96,41 @@ public class AuthService {
     }
 
 
-    public String login(AuthenticationRequest request){
+    public AuthenticationResponse login(AuthenticationRequest request) {
 
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        var user= userRepository.findByEmail(request.getUsername())
-                .orElseThrow(() -> new UserNotFoundException("there is no user with that surname"));
+        try {
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Authentication failed: " + e.getMessage());}
+
+//        Authentication authentication = authenticationManager
+//                .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+            var user = userRepository.findByEmail(request.getUsername())
+                    .orElseThrow(() -> new UserNotFoundException("there is no user with that surname"));
+
+            String jwtToken = jwtService.generateToken(user);
+
+            Object userResponse;
+
+            if (user instanceof Technician) {
+                Technician technician = technicianRepository.getReferenceById(user.getId());
+                TechnicianDTOResponse response = TechnicianMapper.mapToTechnicianDTORespnse(technician);
+                // Convert to TechnicianDTOResponse
+                return new AuthenticationResponse(jwtToken, response);
+
+            } else {// this works for both admin and employee
+                User tmpUser = userRepository.getReferenceById(user.getId());
+                UserDTO response = UserMapper.mapToUserDTORespnse(tmpUser); // Convert to UserDTO
+                return new AuthenticationResponse(jwtToken, response);
+            }
 
 
+        }
 
-        String jwtToken = jwtService.generateToken(user);
-        return jwtToken;
+
     }
 
 
 
-}
+

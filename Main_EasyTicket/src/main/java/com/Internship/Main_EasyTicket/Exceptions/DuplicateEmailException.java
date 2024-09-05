@@ -7,8 +7,7 @@ package com.Internship.Main_EasyTicket.Exceptions;
 
         public DuplicateEmailException(String message) {
 
-
-            super(message);
+          super(message);
         }
     }
 

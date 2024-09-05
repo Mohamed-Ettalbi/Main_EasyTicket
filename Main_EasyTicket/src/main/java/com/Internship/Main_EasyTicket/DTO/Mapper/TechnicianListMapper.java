@@ -23,7 +23,9 @@ public class TechnicianListMapper {
                         technician.getEmail(),
                         technician.getPhone()
                         ,technician.getIsApproved(),
-                        technician.getGroup() != null ? technician.getGroup().getName() : null
+                        technician.getGroup() != null ? technician.getGroup().getId() : null,
+                        String.valueOf(technician.getRoles())
+
                 )).collect(Collectors.toList());
 
 

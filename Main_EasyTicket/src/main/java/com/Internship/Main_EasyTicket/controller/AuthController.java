@@ -1,17 +1,15 @@
 package com.Internship.Main_EasyTicket.controller;
 
 
-import com.Internship.Main_EasyTicket.DAO.UserRepository;
+import com.Internship.Main_EasyTicket.dao.UserRepository;
+import com.Internship.Main_EasyTicket.DTO.AuthenticationResponse;
 import com.Internship.Main_EasyTicket.DTO.UserDTO;
-import com.Internship.Main_EasyTicket.Exceptions.UserNotFoundException;
 import com.Internship.Main_EasyTicket.Service.AuthService;
 import com.Internship.Main_EasyTicket.DTO.AuthenticationRequest;
 import com.Internship.Main_EasyTicket.config.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,18 +40,18 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
 
-       String jwtToken = authService.login(request);
-        return ResponseEntity.ok(jwtToken);
+        AuthenticationResponse response = authService.login(request);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDTO request) {
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody UserDTO request) {
 
-        String jwtToken = authService.register(request);
+        AuthenticationResponse response = authService.register(request);
 
-        return ResponseEntity.ok(jwtToken);
+        return ResponseEntity.ok(response);
 
 
     }

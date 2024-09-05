@@ -1,7 +1,7 @@
 package com.Internship.Main_EasyTicket.config;
 
 
-import com.Internship.Main_EasyTicket.DAO.UserRepository;
+import com.Internship.Main_EasyTicket.dao.UserRepository;
 import com.Internship.Main_EasyTicket.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -91,6 +91,7 @@ public class ApplicationConfig  {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        
         return new BCryptPasswordEncoder();
     }
     @Bean

@@ -1,6 +1,7 @@
 package com.Internship.Main_EasyTicket.DTO.Mapper;
 
 import com.Internship.Main_EasyTicket.DTO.GroupDTO;
+import com.Internship.Main_EasyTicket.DTO.Request.AddGroupDTORequest;
 import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
 import com.Internship.Main_EasyTicket.model.Group;
 import lombok.Data;
@@ -24,9 +25,13 @@ public class GroupMapper {
                 group.getDescription(),
                 technicianDTOResponseList
         );
+    }
+        public static Group mapGroupDTOToGorupEntity(AddGroupDTORequest groupDTO){
 
+            return new Group(groupDTO.getGroupName(), groupDTO.getGroupDescription());
+        }
 
-    }}
+}
 
 
 

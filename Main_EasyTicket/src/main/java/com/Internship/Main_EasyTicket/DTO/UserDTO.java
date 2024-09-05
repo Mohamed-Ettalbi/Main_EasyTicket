@@ -32,6 +32,10 @@ public class UserDTO {
 
     @NotBlank(message = "this field can not be blank")
     @Size(min = 8, max = 64)
+    @Pattern(
+            regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[@#$%^&+=!]).{8,64}$",
+            message = "Password must contain at least one digit, one lowercase letter, and one special character"
+    )
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 

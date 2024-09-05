@@ -1,4 +1,4 @@
-package com.Internship.Main_EasyTicket.DAO;
+package com.Internship.Main_EasyTicket.dao;
 
 import com.Internship.Main_EasyTicket.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +11,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmailIgnoreCase(String email);
     Optional<User> findByEmail(String email);
-
-
 }

@@ -3,8 +3,8 @@ package com.Internship.Main_EasyTicket.controller;
 
 import com.Internship.Main_EasyTicket.DTO.GroupDTO;
 import com.Internship.Main_EasyTicket.DTO.Request.AddGroupDTORequest;
-import com.Internship.Main_EasyTicket.DAO.AdminRepository;
-import com.Internship.Main_EasyTicket.DAO.UserRepository;
+import com.Internship.Main_EasyTicket.dao.AdminRepository;
+import com.Internship.Main_EasyTicket.dao.UserRepository;
 import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
 import com.Internship.Main_EasyTicket.Service.GroupService;
 import com.Internship.Main_EasyTicket.model.Group;

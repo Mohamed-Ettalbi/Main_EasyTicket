@@ -3,7 +3,7 @@ package com.Internship.Main_EasyTicket.Service;
 import com.Internship.Main_EasyTicket.DTO.Mapper.UserListMapper;
 import com.Internship.Main_EasyTicket.DTO.Mapper.UserMapper;
 import com.Internship.Main_EasyTicket.DTO.UserDTO;
-import com.Internship.Main_EasyTicket.DAO.UserRepository;
+import com.Internship.Main_EasyTicket.dao.UserRepository;
 import com.Internship.Main_EasyTicket.Exceptions.DuplicateEmailException;
 import com.Internship.Main_EasyTicket.Exceptions.NoContentException;
 import com.Internship.Main_EasyTicket.Exceptions.UserNotFoundException;

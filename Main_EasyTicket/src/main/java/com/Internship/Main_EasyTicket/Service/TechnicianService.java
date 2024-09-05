@@ -1,5 +1,6 @@
 package com.Internship.Main_EasyTicket.Service;
-import com.Internship.Main_EasyTicket.DAO.TechnicianRepository;
+import com.Internship.Main_EasyTicket.Exceptions.UserNotFoundException;
+import com.Internship.Main_EasyTicket.dao.TechnicianRepository;
 import com.Internship.Main_EasyTicket.DTO.Mapper.TechnicianListMapper;
 import com.Internship.Main_EasyTicket.DTO.Mapper.TechnicianMapper;
 import com.Internship.Main_EasyTicket.DTO.UserDTO;
@@ -58,5 +59,15 @@ public class TechnicianService {
             return technicianDTOResponseList;
         }
     }
-}
+
+
+    public TechnicianDTOResponse getTechnicianByEmail(String email){
+
+        Technician technician = technicianRepository.findByEmail(email)
+                .orElseThrow(() -> new TechnicianNotFoundException("technician not found"));
+
+            return TechnicianMapper.mapToTechnicianDTORespnse(technician);
+        }
+    }
+
 

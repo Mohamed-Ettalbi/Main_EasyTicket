@@ -3,7 +3,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.Internship.Main_EasyTicket.DTO.UserDTO;
-import com.Internship.Main_EasyTicket.DAO.UserRepository;
+import com.Internship.Main_EasyTicket.dao.UserRepository;
 import com.Internship.Main_EasyTicket.Exceptions.DuplicateEmailException;
 import com.Internship.Main_EasyTicket.Exceptions.UserNotFoundException;
 import com.Internship.Main_EasyTicket.model.User;
