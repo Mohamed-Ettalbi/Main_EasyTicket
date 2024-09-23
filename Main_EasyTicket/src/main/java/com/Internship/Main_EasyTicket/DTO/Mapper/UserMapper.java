@@ -16,7 +16,8 @@ public class UserMapper {
                         user.getLastName(),
                         user.getEmail(),
                         user.getPhone()
-                         ,user.getPassword()
+//                         ,user.getPassword()
+                ,null
                         ,user.getIsApproved()
                 , String.valueOf(user.getRoles())
                 );

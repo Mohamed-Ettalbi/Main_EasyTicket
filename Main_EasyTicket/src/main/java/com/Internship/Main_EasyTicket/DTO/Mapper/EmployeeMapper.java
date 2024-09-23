@@ -17,8 +17,8 @@ public class EmployeeMapper {
                         employee.getLastName(),
                         employee.getEmail(),
                         employee.getPhone()
-                         ,employee.getPassword()
-                        ,employee.getIsApproved()
+                         ,null
+                ,employee.getIsApproved()
                 , String.valueOf(employee.getRoles())
                 );
 

@@ -122,7 +122,7 @@ public class AuthService {
 
             } else {// this works for both admin and employee
                 User tmpUser = userRepository.getReferenceById(user.getId());
-                UserDTOResponse response = UserMapper.mapToUserDTORespnse(tmpUser); // Convert to UserDTO
+                UserDTOResponse response = UserMapper.mapToUserDTORespnse(tmpUser);
                 return new AuthenticationResponse(jwtToken, response);
             }
 
