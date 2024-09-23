@@ -68,6 +68,15 @@ public class TechnicianService {
 
             return TechnicianMapper.mapToTechnicianDTORespnse(technician);
         }
+
+
+    public void removeTechnicianFromGroup(Long technicianId) {
+        Technician technician = technicianRepository.findById(technicianId)
+                .orElseThrow(() -> new RuntimeException("Technician not found"));
+
+        technician.setGroup(null);
+        technicianRepository.save(technician);
+    }
     }
 
 

@@ -1,6 +1,7 @@
 package com.Internship.Main_EasyTicket.controller;
 
 import com.Internship.Main_EasyTicket.DTO.UserDTO;
+import com.Internship.Main_EasyTicket.DTO.UserDTOResponse;
 import com.Internship.Main_EasyTicket.dao.UserRepository;
 import com.Internship.Main_EasyTicket.Service.UserService;
 import jakarta.validation.Valid;
@@ -22,9 +23,9 @@ public class UserController {
 //get all users in List format
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
+    public ResponseEntity<List<UserDTOResponse>> getAllUsers() {
 
-        List<UserDTO> users = userService.getAllUsers();
+        List<UserDTOResponse> users = userService.getAllUsers();
 
         return new ResponseEntity<>(users, HttpStatus.OK);
 
@@ -33,9 +34,9 @@ public class UserController {
 
     //get one user as requested by id
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id){
+    public ResponseEntity<UserDTOResponse> getUserById(@PathVariable Long id){
 
-         UserDTO user= userService.getUserById(id);
+        UserDTOResponse user= userService.getUserById(id);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
 
@@ -45,19 +46,19 @@ public class UserController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO request) {
+    public ResponseEntity<UserDTOResponse> createUser(@Valid @RequestBody UserDTO request) {
 
-        UserDTO usertmp = userService.createUser(request);
+        UserDTOResponse usertmp = userService.createUser(request);
 
         return new ResponseEntity<>(usertmp, HttpStatus.CREATED);
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO request) {
+    public ResponseEntity<UserDTOResponse> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO request) {
 
 
-        UserDTO user =userService.updateUser(id,request);
+        UserDTOResponse user =userService.updateUser(id,request);
 
             return new ResponseEntity<>(user,HttpStatus.OK);
 

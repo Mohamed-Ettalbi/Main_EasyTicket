@@ -1,15 +1,17 @@
 package com.Internship.Main_EasyTicket.DTO.Mapper;
 
 import com.Internship.Main_EasyTicket.DTO.UserDTO;
+import com.Internship.Main_EasyTicket.DTO.UserDTOResponse;
 import com.Internship.Main_EasyTicket.model.User;
 
 public class UserMapper {
 
 
-    public static UserDTO mapToUserDTORespnse(User user) {
+    public static UserDTOResponse mapToUserDTORespnse(User user) {
 
 
-        return  new UserDTO(
+        return  new UserDTOResponse(
+                        user.getId(),
                         user.getFirstName(),
                         user.getLastName(),
                         user.getEmail(),

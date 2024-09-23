@@ -1,6 +1,7 @@
 package com.Internship.Main_EasyTicket.Service;
 
 
+import com.Internship.Main_EasyTicket.DTO.UserDTOResponse;
 import com.Internship.Main_EasyTicket.dao.EmployeeRepository;
 import com.Internship.Main_EasyTicket.DTO.Mapper.EmployeeListMapper;
 import com.Internship.Main_EasyTicket.DTO.Mapper.UserMapper;
@@ -19,7 +20,7 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public UserDTO createEmployee(UserDTO request) {
+    public UserDTOResponse createEmployee(UserDTO request) {
 
         boolean emailExists = employeeRepository.existsByEmailIgnoreCase(request.getEmail());
         if (emailExists) {
@@ -37,17 +38,17 @@ public class EmployeeService {
             employee.setUpdatedAt(now);
 
             employeeRepository.save(employee);
-            UserDTO response = UserMapper.mapToUserDTORespnse(employee);
+            UserDTOResponse response = UserMapper.mapToUserDTORespnse(employee);
 
             return response;
         }
 
 
     }
-    public List<UserDTO> getAllEmployee() {
+    public List<UserDTOResponse> getAllEmployee() {
 
         List<Employee> employeeList = employeeRepository.findAll();
-        List<UserDTO> employeeDTOResponseList = EmployeeListMapper.mapToUserDTORespnse(employeeList);
+        List<UserDTOResponse> employeeDTOResponseList = EmployeeListMapper.mapToUserDTORespnse(employeeList);
         if (employeeDTOResponseList.isEmpty()) {
 
             throw new TechnicianNotFoundException("there is currently no technicians in the system");

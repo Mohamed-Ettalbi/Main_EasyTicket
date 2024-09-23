@@ -1,5 +1,6 @@
 package com.Internship.Main_EasyTicket.Service;
 
+import com.Internship.Main_EasyTicket.DTO.UserDTOResponse;
 import com.Internship.Main_EasyTicket.dao.EmployeeRepository;
 import com.Internship.Main_EasyTicket.dao.TechnicianRepository;
 import com.Internship.Main_EasyTicket.dao.UserRepository;
@@ -87,7 +88,7 @@ public class AuthService {
                     .build();
             employeeRepository.save(employee);
             String jwtToken = jwtService.generateToken(employee);
-            UserDTO response = EmployeeMapper.mapEmployeeToUserDTORespnse(employee);
+            UserDTOResponse response = EmployeeMapper.mapEmployeeToUserDTORespnse(employee);
             return new AuthenticationResponse(jwtToken,response);
 
         } else {
@@ -121,7 +122,7 @@ public class AuthService {
 
             } else {// this works for both admin and employee
                 User tmpUser = userRepository.getReferenceById(user.getId());
-                UserDTO response = UserMapper.mapToUserDTORespnse(tmpUser); // Convert to UserDTO
+                UserDTOResponse response = UserMapper.mapToUserDTORespnse(tmpUser); // Convert to UserDTO
                 return new AuthenticationResponse(jwtToken, response);
             }
 

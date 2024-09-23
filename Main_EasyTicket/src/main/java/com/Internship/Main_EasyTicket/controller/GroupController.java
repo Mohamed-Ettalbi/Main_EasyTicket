@@ -32,7 +32,7 @@ public class GroupController {
     @PostMapping("/add")
     public ResponseEntity<GroupDTO> addGroup(@RequestBody AddGroupDTORequest group) {
         GroupDTO createdGroup = groupService.createGroup(group);
-        return new ResponseEntity<>(createdGroup, HttpStatus.CREATED); // Return the created group
+        return new ResponseEntity<>(createdGroup, HttpStatus.CREATED);
     }
 
 

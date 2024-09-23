@@ -39,9 +39,12 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/auth/**","/swagger-ui/**").permitAll()
-                        .requestMatchers("/api/technician/**").hasAnyRole("TECHNICIAN", "ADMIN")
+                        .requestMatchers("/api/technician/**").hasAnyRole("ADMIN", "TECHNICIAN")
+                        .requestMatchers("/api/group/**").hasAnyRole("ADMIN", "TECHNICIAN")
+
                         .requestMatchers("api/employee/**").hasAnyRole("EMPLOYEE","ADMIN" )
                         .requestMatchers("/api/admin/**","api/group/**").hasRole("ADMIN")
+                        .requestMatchers("api/user/**").hasRole("ADMIN" )
                         .anyRequest().authenticated()
 
                 )
@@ -74,7 +77,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));  // Allow your Angular frontend
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:8081"));  // Allow your Angular frontend
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // Allow HTTP methods
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));  // Allow specific headers
         configuration.setAllowCredentials(true);  // Allow credentials (cookies, etc.)
