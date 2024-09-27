@@ -1,6 +1,6 @@
 //package com.Internship.Main_EasyTicket.config;
 //
-//    import com.Internship.Main_EasyTicket.DAO.UserRepository;
+//    import com.Internship.Main_EasyTicket.dao.UserRepository;
 //    import com.Internship.Main_EasyTicket.model.Admin;
 //    import com.Internship.Main_EasyTicket.model.Role;
 //    import com.Internship.Main_EasyTicket.model.User;
@@ -25,7 +25,7 @@
 //        @Bean
 //        public CommandLineRunner insertAdminUser() {
 //            return args -> {
-//                String adminEmail = "admin@example.com";
+//                String adminEmail = "admin@gmail.com";
 //
 //                // Check if admin user already exists
 //
@@ -35,7 +35,7 @@
 //                            .lastName("User")
 //                            .email(adminEmail)
 //                            .phone("1234567890")
-//                            .password(passwordEncoder.encode("admin"))
+//                            .password(passwordEncoder.encode("A1&aaaaa"))
 //                            .roles(Set.of(Role.ROLE_ADMIN))
 //                            .isApproved(true)
 //                            .createdAt(LocalDateTime.now())

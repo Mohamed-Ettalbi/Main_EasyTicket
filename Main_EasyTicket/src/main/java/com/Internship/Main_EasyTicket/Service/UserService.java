@@ -3,7 +3,8 @@ package com.Internship.Main_EasyTicket.Service;
 import com.Internship.Main_EasyTicket.DTO.Mapper.UserListMapper;
 import com.Internship.Main_EasyTicket.DTO.Mapper.UserMapper;
 import com.Internship.Main_EasyTicket.DTO.UserDTO;
-import com.Internship.Main_EasyTicket.DAO.UserRepository;
+import com.Internship.Main_EasyTicket.DTO.UserDTOResponse;
+import com.Internship.Main_EasyTicket.dao.UserRepository;
 import com.Internship.Main_EasyTicket.Exceptions.DuplicateEmailException;
 import com.Internship.Main_EasyTicket.Exceptions.NoContentException;
 import com.Internship.Main_EasyTicket.Exceptions.UserNotFoundException;
@@ -26,7 +27,7 @@ public class UserService {
 
 
 
-    public List<UserDTO> getAllUsers(){
+    public List<UserDTOResponse> getAllUsers(){
 
 
         List<User> users = userRepository.findAll();
@@ -40,7 +41,7 @@ public class UserService {
         }else
         {
 
-            List<UserDTO> userListResponse = UserListMapper.mapToUserDTORespnse(users);
+            List<UserDTOResponse> userListResponse = UserListMapper.mapToUserDTORespnse(users);
             return userListResponse;
 
         }
@@ -48,14 +49,14 @@ public class UserService {
 
     }
 
-    public UserDTO getUserById(Long id) {
+    public UserDTOResponse getUserById(Long id) {
 
 
      User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(
               "the User with the ID: "+id +
                       " Does Not Exist") );
 
-     UserDTO userDTO = UserMapper.mapToUserDTORespnse(user);
+        UserDTOResponse userDTO = UserMapper.mapToUserDTORespnse(user);
      return userDTO;
 
 
@@ -65,7 +66,7 @@ public class UserService {
 
 
 
-    public UserDTO createUser(UserDTO request) {
+    public UserDTOResponse createUser(UserDTO request) {
         boolean emailExists= userRepository.existsByEmailIgnoreCase(request.getEmail());
 
         if(emailExists){
@@ -84,11 +85,11 @@ public class UserService {
             user.setUpdatedAt(now);
 
             userRepository.save(user);
-            UserDTO userDTO = UserMapper.mapToUserDTORespnse(user);
+            UserDTOResponse userDTO = UserMapper.mapToUserDTORespnse(user);
             return userDTO;
         }
         }
-    public UserDTO updateUser(Long id, UserDTO request)
+    public UserDTOResponse updateUser(Long id, UserDTO request)
     {
 
         User existingUser = userRepository.findById(id)
@@ -114,7 +115,7 @@ public class UserService {
                 existingUser.setUpdatedAt(now);
                 userRepository.save(existingUser);
 
-                UserDTO userDTO = UserMapper.mapToUserDTORespnse(existingUser);
+                UserDTOResponse userDTO = UserMapper.mapToUserDTORespnse(existingUser);
                 return userDTO;
 
             }
@@ -130,24 +131,24 @@ public class UserService {
        }
 
     }
-    public UserDTO approveUser(Long id) {
+    public UserDTOResponse approveUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("the User with the ID: "+id +" Does Not Exist"));
 
         user.setIsApproved(true);
         userRepository.save(user);
-        UserDTO userDTO = UserMapper.mapToUserDTORespnse(user);
+        UserDTOResponse userDTO = UserMapper.mapToUserDTORespnse(user);
 
         return userDTO;
     }
 
-    public UserDTO disableUser(Long id) {
+    public UserDTOResponse disableUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("the User with the ID: "+id +" Does Not Exist"));
 
         user.setIsApproved(false);
         userRepository.save(user);
-        UserDTO userDTO = UserMapper.mapToUserDTORespnse(user);
+        UserDTOResponse userDTO = UserMapper.mapToUserDTORespnse(user);
         return userDTO;
     }
 

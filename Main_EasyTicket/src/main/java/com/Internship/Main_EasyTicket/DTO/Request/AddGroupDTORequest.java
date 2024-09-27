@@ -1,5 +1,8 @@
 package com.Internship.Main_EasyTicket.DTO.Request;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,9 +15,16 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AddGroupDTORequest {
 
-    @Size(min = 1, max = 50)
+
+    @Column(unique = true, nullable = false)
+    @Pattern(regexp = "^[A-Za-z0-9 _-]{3,50}$", message = "Group name must be between 3 and 50 characters long and can only contain letters, numbers, spaces, underscores, and hyphens.")
     private String groupName;
-    @Size(min = 1, max = 10000)
+
+    @Column(nullable = false)
+    @Size(max = 2500 )
     private String groupDescription;
+
+
+
 
 }

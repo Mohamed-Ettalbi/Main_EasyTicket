@@ -1,6 +1,7 @@
 package com.Internship.Main_EasyTicket.controller;
 
 import com.Internship.Main_EasyTicket.DTO.UserDTO;
+import com.Internship.Main_EasyTicket.DTO.UserDTOResponse;
 import com.Internship.Main_EasyTicket.Service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +19,16 @@ public class EmployeeController {
     public EmployeeService employeeService;
 
     @PostMapping("/add")
-    public ResponseEntity<UserDTO> addEmployee(@RequestBody @Valid UserDTO request) {
-      UserDTO employeeResponse = employeeService.createEmployee(request);
+    public ResponseEntity<UserDTOResponse> addEmployee(@RequestBody @Valid UserDTO request) {
+        UserDTOResponse employeeResponse = employeeService.createEmployee(request);
       return new ResponseEntity<>(employeeResponse, HttpStatus.CREATED);
 
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserDTO>> getAllEmployee(){
+    public ResponseEntity<List<UserDTOResponse>> getAllEmployee(){
 
-        List<UserDTO> employeeList = employeeService.getAllEmployee();
+        List<UserDTOResponse> employeeList = employeeService.getAllEmployee();
         return new ResponseEntity<>(employeeList,HttpStatus.OK);
 
 

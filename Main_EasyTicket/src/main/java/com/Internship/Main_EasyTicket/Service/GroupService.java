@@ -1,9 +1,11 @@
 package com.Internship.Main_EasyTicket.Service;
 
-import com.Internship.Main_EasyTicket.DAO.*;
+import com.Internship.Main_EasyTicket.dao.*;
 import com.Internship.Main_EasyTicket.DTO.GroupDTO;
+import com.Internship.Main_EasyTicket.DTO.Mapper.GroupListMapper;
 import com.Internship.Main_EasyTicket.DTO.Mapper.GroupMapper;
 import com.Internship.Main_EasyTicket.DTO.Mapper.TechnicianListMapper;
+import com.Internship.Main_EasyTicket.DTO.Mapper.TechnicianMapper;
 import com.Internship.Main_EasyTicket.DTO.Request.AddGroupDTORequest;
 import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
 import com.Internship.Main_EasyTicket.Exceptions.DuplicateGroupNameException;
@@ -11,6 +13,7 @@ import com.Internship.Main_EasyTicket.Exceptions.GroupNotFoundException;
 import com.Internship.Main_EasyTicket.Exceptions.TechnicianNotFoundException;
 import com.Internship.Main_EasyTicket.model.Group;
 import com.Internship.Main_EasyTicket.model.Technician;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,23 +26,26 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final TechnicianRepository technicianRepository;
 
+    @Autowired
     public GroupService(AdminRepository adminRepository, GroupRepository groupRepository, TechnicianRepository technicianRepository) {
         this.adminRepository = adminRepository;
         this.groupRepository = groupRepository;
         this.technicianRepository = technicianRepository;
     }
 
-    public Group createGroup(AddGroupDTORequest addGroupDTORequest){
+    public GroupDTO createGroup(AddGroupDTORequest addGroupDTORequest){
         boolean groupExists = groupRepository.existsByNameIgnoreCase(addGroupDTORequest.getGroupName());
         if (groupExists) {
             throw new DuplicateGroupNameException("A group with the name " + addGroupDTORequest.getGroupName() + " already exists.");
         }else{
 
-            Group group = new Group(addGroupDTORequest.getGroupName(), addGroupDTORequest.getGroupDescription());
+//            Group group = new Group(addGroupDTORequest.getGroupName(), addGroupDTORequest.getGroupDescription());
+            Group group = GroupMapper.mapGroupDTOToGorupEntity(addGroupDTORequest);
             group.setCreatedAt(LocalDateTime.now());
             group.setUpdatedAt(LocalDateTime.now());
 
-           return groupRepository.save(group);
+           groupRepository.save(group);
+            return GroupMapper.mapGroupToGorupDTO(group);
         }
 
     }
@@ -56,7 +62,7 @@ public class GroupService {
         }
     }
 
-    public Group updateGroupInfo(Long id,AddGroupDTORequest request){
+    public GroupDTO updateGroupInfo(Long id,AddGroupDTORequest request){
 
         Group group = groupRepository.findById(id).
                 orElseThrow(() -> new GroupNotFoundException
@@ -71,7 +77,10 @@ public class GroupService {
             group.setName(request.getGroupName());
             group.setDescription(request.getGroupDescription());
             group.setUpdatedAt(LocalDateTime.now());
-            return groupRepository.save(group);
+           groupRepository.save(group);
+           return GroupMapper.mapGroupToGorupDTO(group);
+
+
 
 
         }
@@ -79,12 +88,12 @@ public class GroupService {
     }
 
 
-        public List<Group> getAllGroups() {
+        public List<GroupDTO> getAllGroups() {
         List<Group> groups = groupRepository.findAll();
         if (groups.isEmpty()) {
             throw new GroupNotFoundException("No groups available.");
         }else {
-        return groups;
+        return GroupListMapper.mapGroupListToGorupDTOList(groups);
         }
     }
     public GroupDTO getGroupById(Long id) {
@@ -110,14 +119,8 @@ public class GroupService {
         group.getTechnicians().add(technician);
         groupRepository.save(group);
         technicianRepository.save(technician);
-         return new TechnicianDTOResponse(technician.getId(),
-                technician.getFirstName(),
-                technician.getLastName(),
-                technician.getEmail(),
-                technician.getPhone(),technician.getIsApproved(),
-                technician.getGroup().getName());
-
-
+         TechnicianDTOResponse response= TechnicianMapper.mapToTechnicianDTORespnse(technician);
+         return response;
     }
 
     public List<TechnicianDTOResponse> getAllTechniciansOfGroup(Long groupid) {
@@ -133,7 +136,7 @@ public class GroupService {
             List<TechnicianDTOResponse> technicianDTOResponseList= TechnicianListMapper.mapToTechnicianDTORespnse(techniciansList);
 
             return technicianDTOResponseList;
-        }
+}
 
 
     }

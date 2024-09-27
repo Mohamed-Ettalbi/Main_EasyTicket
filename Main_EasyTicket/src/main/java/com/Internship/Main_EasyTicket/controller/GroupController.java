@@ -3,8 +3,8 @@ package com.Internship.Main_EasyTicket.controller;
 
 import com.Internship.Main_EasyTicket.DTO.GroupDTO;
 import com.Internship.Main_EasyTicket.DTO.Request.AddGroupDTORequest;
-import com.Internship.Main_EasyTicket.DAO.AdminRepository;
-import com.Internship.Main_EasyTicket.DAO.UserRepository;
+import com.Internship.Main_EasyTicket.dao.AdminRepository;
+import com.Internship.Main_EasyTicket.dao.UserRepository;
 import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
 import com.Internship.Main_EasyTicket.Service.GroupService;
 import com.Internship.Main_EasyTicket.model.Group;
@@ -30,9 +30,9 @@ public class GroupController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Group> addGroup(@RequestBody AddGroupDTORequest group) {
-        Group createdGroup = groupService.createGroup(group);
-        return new ResponseEntity<>(createdGroup, HttpStatus.CREATED); // Return the created group
+    public ResponseEntity<GroupDTO> addGroup(@RequestBody AddGroupDTORequest group) {
+        GroupDTO createdGroup = groupService.createGroup(group);
+        return new ResponseEntity<>(createdGroup, HttpStatus.CREATED);
     }
 
 
@@ -44,15 +44,15 @@ public class GroupController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Group> updateGroupInfo(@PathVariable Long id,@RequestBody AddGroupDTORequest group)
+    public ResponseEntity<GroupDTO> updateGroupInfo(@PathVariable Long id,@RequestBody AddGroupDTORequest group)
     {
-       Group UpdateGroup= groupService.updateGroupInfo(id,group);
+        GroupDTO UpdateGroup= groupService.updateGroupInfo(id,group);
         return new ResponseEntity<>(UpdateGroup,HttpStatus.OK);
     }
     @GetMapping("/groups")
-    public ResponseEntity<List<Group>> getGeoupAllGroups()
+    public ResponseEntity<List<GroupDTO>> getGeoupAllGroups()
     {
-        List<Group> groups =groupService.getAllGroups();
+        List<GroupDTO> groups =groupService.getAllGroups();
         return new ResponseEntity<>(groups, HttpStatus.OK);
     }
     @GetMapping("/{id}")

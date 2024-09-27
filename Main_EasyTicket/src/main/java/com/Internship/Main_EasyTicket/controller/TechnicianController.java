@@ -38,6 +38,22 @@ public class TechnicianController {
 
 
     }
+    @GetMapping()
+    public ResponseEntity<TechnicianDTOResponse> getTechnicianByEmail(@RequestParam("email") String email){
+
+        TechnicianDTOResponse technicianList = technicianService.getTechnicianByEmail(email);
+        return new ResponseEntity<>(technicianList,HttpStatus.OK);
+
+
+
+    }
+
+    // New endpoint to remove the technician from the group
+    @PutMapping("/removefromgrup/{technicianId}")
+    public ResponseEntity<Void> removeTechnicianFromGroup(@PathVariable Long technicianId) {
+        technicianService.removeTechnicianFromGroup(technicianId);
+        return ResponseEntity.ok().build();
+    }
 
 
 }

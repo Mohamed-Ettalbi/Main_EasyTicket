@@ -2,7 +2,8 @@ package com.Internship.Main_EasyTicket.controller;
 
 import com.Internship.Main_EasyTicket.DTO.Response.TechnicianDTOResponse;
 import com.Internship.Main_EasyTicket.DTO.UserDTO;
-import com.Internship.Main_EasyTicket.DAO.UserRepository;
+import com.Internship.Main_EasyTicket.DTO.UserDTOResponse;
+import com.Internship.Main_EasyTicket.dao.UserRepository;
 import com.Internship.Main_EasyTicket.Service.AdminService;
 import com.Internship.Main_EasyTicket.Service.GroupService;
 import com.Internship.Main_EasyTicket.Service.UserService;
@@ -29,18 +30,18 @@ public class AdminController {
         this.userService = userService;
     }
     @PutMapping("/approve/{id}")
-    public ResponseEntity<UserDTO> approuveUser(@PathVariable Long id) {
+    public ResponseEntity<UserDTOResponse> approuveUser(@PathVariable Long id) {
 
-        UserDTO user = userService.approveUser(id);
+        UserDTOResponse user = userService.approveUser(id);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
 
 
     }
     @PutMapping("/disable/{id}")
-    public ResponseEntity<UserDTO> disableUser(@PathVariable Long id) {
+    public ResponseEntity<UserDTOResponse> disableUser(@PathVariable Long id) {
 
-        UserDTO user = userService.disableUser(id);
+        UserDTOResponse user = userService.disableUser(id);
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
     
